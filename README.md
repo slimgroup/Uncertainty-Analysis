@@ -137,22 +137,27 @@ Uncertainty-Analysis/
 ## Sample Output Figures
 
 ### Calibration Analysis
-![Calibration Comparison](sample_figs/calibration_comparison.png)
+<img src="sample_figs/calibration_comparison.png" width="50%">
+
 **Calibration curve comparison** showing predicted uncertainty vs. observed error. The ideal 45° line indicates perfect calibration. The enhanced method (orange) aligns closer to optimal calibration compared to baseline (blue), with significantly reduced UCE.
 
 ### Z-Score Analysis  
-![Z-Score Map](sample_figs/z_score.png)
+<img src="sample_figs/z_score.png" width="50%">
+
 **Z-score distribution map** highlighting regions where error/uncertainty > 2 (shown in red). Lower percentages of red regions indicate better uncertainty quantification. Enhanced methods typically show reduced outlier regions.
 
 ### Posterior Coverage Assessment
-![Trace Analysis](sample_figs/trace.png)  
+<img src="sample_figs/trace.png" width="50%">
+
 **Posterior coverage visualization** showing vertical slices through velocity models. Black curve represents ground truth, while red curves show posterior sample traces. Good coverage ensures ground truth falls within the posterior sample range, with uncertainty increasing naturally with depth.
 
 ### Additional Visualizations
-![Error Map](sample_figs/error.png)
+<img src="sample_figs/error.png" width="50%">
+
 **Error visualization** showing absolute differences between posterior mean and ground truth
 
-![Juxtapose Analysis](sample_figs/juxtapose.png)
+<img src="sample_figs/juxtapose.png" width="50%">
+
 **Comprehensive posterior analysis** displaying multiple posterior samples and summary statistics
 
 ## File Structure
