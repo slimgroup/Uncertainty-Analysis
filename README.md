@@ -134,6 +134,50 @@ Uncertainty-Analysis/
     └── uncertainty_analysis_example.jl
 ```
 
+## Sample Output Figures
+
+### Calibration Analysis
+![Calibration Comparison](sample_figs/calibration_comparison.png)
+**Calibration curve comparison** showing predicted uncertainty vs. observed error. The ideal 45° line indicates perfect calibration. The enhanced method (orange) aligns closer to optimal calibration compared to baseline (blue), with significantly reduced UCE.
+
+### Z-Score Analysis  
+![Z-Score Map](sample_figs/z_score.png)
+**Z-score distribution map** highlighting regions where error/uncertainty > 2 (shown in red). Lower percentages of red regions indicate better uncertainty quantification. Enhanced methods typically show reduced outlier regions.
+
+### Posterior Coverage Assessment
+![Trace Analysis](sample_figs/trace.png)  
+**Posterior coverage visualization** showing vertical slices through velocity models. Black curve represents ground truth, while red curves show posterior sample traces. Good coverage ensures ground truth falls within the posterior sample range, with uncertainty increasing naturally with depth.
+
+### Additional Visualizations
+![Error Map](sample_figs/error.png)
+**Error visualization** showing absolute differences between posterior mean and ground truth
+
+![Juxtapose Analysis](sample_figs/juxtapose.png)
+**Comprehensive posterior analysis** displaying multiple posterior samples and summary statistics
+
+## File Structure
+
+```
+Uncertainty-Analysis/
+├── README.md
+├── uncertainty_analysis.jl          # Main CLI executable  
+├── example_config.toml              # Configuration template
+├── example_usage.jl                 # Usage examples
+├── sample_figs/                     # Sample output figures
+│   ├── calibration_comparison.png   # Calibration curve example
+│   ├── z_score.png                  # Z-score distribution  
+│   ├── trace.png                    # Coverage analysis
+│   ├── error.png                    # Error visualization
+│   └── juxtapose.png                # Posterior summary
+└── src/
+    ├── UncertaintyAnalysis.jl       # Main module
+    ├── plotting.jl                  # Visualization functions
+    ├── calibration.jl               # UCE computation
+    ├── coverage.jl                  # Coverage analysis
+    ├── metrics.jl                   # Statistical metrics
+    └── utils.jl                     # Utility functions
+```
+
 ## Contributing
 
 This toolkit is designed for robust uncertainty analysis in scientific computing applications. Functions should maintain consistency with image-based data formats and provide comprehensive uncertainty assessment capabilities.
