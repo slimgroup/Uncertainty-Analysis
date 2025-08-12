@@ -11,43 +11,67 @@ This repository provides functions for analyzing and visualizing uncertainty in 
 - Coverage assessment
 - Statistical validation of Bayesian methods
 
-## Core Functions
+## Core Analysis Functions
 
-### 1. Posterior Summary Statistics
-- **Posterior Mean Plot**: Compute and visualize the mean of posterior samples
-- **Error Plot**: Absolute error between posterior mean and ground truth
-- **Pixel-wise RMSE Plot**: Root mean square error computed pixel-wise across samples
+### 1. Posterior Summary Visualization
+- **`plot_x_gt()`**: Ground truth velocity model visualization
+- **`plot_x_hat()`**: Posterior mean with Structural Similarity Index (SSIM) metric
+- **`plot_error()`**: Absolute error mapping with Root Mean Square Error (RMSE) 
+- **`plot_uncert()`**: Posterior standard deviation (uncertainty) visualization
+- **`plot_posterior()`**: Comprehensive analysis combining all above plots
 
-### 2. Uncertainty Quantification
-- **Uncertainty Calibration Plot**: Compute Uncertainty Calibration Error (UCE) to assess calibration quality
-- **Z-score Plot**: Standardized residuals to assess distributional assumptions
-- **Posterior Coverage Plot**: Empirical coverage assessment against theoretical confidence intervals
+### 2. Uncertainty Calibration Analysis
+- **`plot_calibration()`**: **Calibration curve analysis** - Tests how well predicted uncertainties align with observed errors by plotting the relationship E[||x_gt - x_hat|| | σ_hat = σ] = σ. Ideal calibration follows the 45° line where predicted uncertainties match observed errors.
+- **`compute_calibration()`**: Computes Uncertainty Calibration Error (UCE) by binning predicted uncertainties and measuring discrepancy between predicted uncertainties and actual errors
+- **`uceloss()`**: Core UCE computation measuring calibration quality
 
-### 3. Input Requirements
-All functions are designed to work with:
-- **Posterior samples**: 4D array (height, width, channels, n_samples) 
-- **Ground truth data**: 2D/3D array (height, width, [channels])
-- **Image format**: Functions assume spatial data (e.g., velocity models, seismic images)
+### 3. Z-Score Analysis  
+- **`plot_z_score()`**: **Z-score distribution mapping** - Visualizes the pixel-wise ratio Z = ||x_mean - x_gt|| / x_std, highlighting regions where Z > 2 (indicating underestimated uncertainty). Ideal Z-scores should be close to 1 across all pixels.
+- **`compute_z_score()`**: Computes standardized residuals to evaluate uncertainty quality by measuring how well predicted uncertainty captures actual prediction error
 
-## Function Categories
+### 4. Posterior Coverage Assessment
+- **`compute_coverage()`**: **Coverage rate analysis** - Evaluates whether ground truth values fall within posterior confidence intervals (e.g., 1st-99th percentiles). High coverage rates indicate that posterior samples appropriately capture the ground truth distribution.
+- **`compute_empirical_coverage()`**: Computes fraction of pixels where ground truth falls within specified confidence intervals
 
-### Visualization Functions
+## Scientific Background
+
+These uncertainty quantification methods are based on established practices in Bayesian inverse problems:
+
+- **Calibration Analysis**: Validates that predicted uncertainties align with observed errors, ensuring reliable uncertainty estimates
+- **Z-Score Analysis**: Identifies regions where uncertainty is underestimated (Z > 2) or overestimated (Z < 1)  
+- **Coverage Analysis**: Assesses whether posterior samples provide adequate coverage of the true parameter space
+
+## Input Requirements
+All functions work with:
+- **Posterior samples**: 4D array (nx, nz, 1, n_samples) - velocity models or seismic images
+- **Ground truth data**: 2D array (nx, nz) - reference velocity model  
+- **Spatial coordinates**: Grid spacing (dx, dz) in meters for proper scaling
+
+## Key Plotting Functions
+
+### Core Visualization Functions
 ```julia
-# Posterior analysis plots
-plot_posterior_mean(posterior_samples, ground_truth; options...)
-plot_error_map(posterior_samples, ground_truth; options...)
-plot_rmse_map(posterior_samples, ground_truth; options...)
+# Individual plot functions (adapted from utils_inference.jl)
+plot_x_gt(x_gt, output_dir, config)                    # Ground truth
+plot_x_hat(X_post, x_gt, output_dir, config)          # Posterior mean + SSIM  
+plot_error(X_post, x_gt, output_dir, config)          # Error map + RMSE
+plot_uncert(X_post, output_dir, config)               # Uncertainty map
+plot_calibration(uce, uncert_bin, errors_bin, ...)    # Calibration curve
+plot_z_score(z_score, perc_all, output_dir, config)   # Z-score distribution
+```
 
-# Uncertainty assessment plots  
-plot_uncertainty_calibration(posterior_samples, ground_truth; options...)
-plot_zscore_analysis(posterior_samples, ground_truth; options...)
-plot_coverage_analysis(posterior_samples, ground_truth; confidence_levels...)
+### Comprehensive Analysis
+```julia
+# Complete posterior analysis workflow
+plot_posterior(X_post, x_gt, output_dir, config)      # All plots + metrics
 ```
 
 ### Metric Computation Functions
 ```julia
-# Statistical metrics
-compute_uce(posterior_samples, ground_truth)
+# Statistical analysis
+compute_calibration(test_idx, output_dir; X_post, x_gt, n_bins)  # UCE + binned data
+compute_z_score(X_post, x_gt, threshold)                        # Z-score analysis  
+compute_coverage(X_post, x_gt; confidence_level)                # Coverage statistics
 compute_coverage_statistics(posterior_samples, ground_truth, confidence_levels)
 compute_zscore_statistics(posterior_samples, ground_truth)
 compute_pixelwise_rmse(posterior_samples, ground_truth)
