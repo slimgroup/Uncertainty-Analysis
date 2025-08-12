@@ -1,0 +1,52 @@
+# Example configuration file for Uncertainty Analysis CLI Tool
+
+[data]
+# Path to ground truth velocity model
+ground_truth = "path/to/ground_truth.jld2"
+
+# Path to posterior samples (4D array: nx, nz, 1, n_samples)
+posterior_samples = "path/to/posterior_samples.jld2"
+
+# Optional: path to precomputed posterior mean
+# posterior_mean = "path/to/posterior_mean.jld2"
+
+[output]
+# Output directory for results
+output_dir = "./uncertainty_results/"
+
+# Output format for plots (png, pdf, svg)
+format = "png"
+
+# DPI for raster formats
+dpi = 300
+
+[analysis]
+# Grid spacing in meters (dx, dz)
+grid_spacing = [12.5, 12.5]
+
+# Confidence levels for coverage analysis
+confidence_levels = [0.68, 0.95]
+
+# Number of bins for calibration analysis
+calibration_bins = 45
+
+# Z-score threshold for outlier detection
+zscore_threshold = 2.0
+
+[plotting]
+# Maximum velocity for color scale (km/s)
+vmax_velocity = 4.5
+
+# Maximum error for color scale (km/s)
+vmax_error = 0.42
+
+# Maximum uncertainty for color scale (km/s)
+vmax_uncertainty = 0.42
+
+# Plots to generate (comma-separated list or "all")
+# Options: posterior_mean, error, rmse, calibration, zscore, coverage, uncertainty
+plots = "all"
+
+[settings]
+# Verbose output
+verbose = true
